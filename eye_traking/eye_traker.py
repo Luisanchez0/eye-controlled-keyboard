@@ -7,23 +7,32 @@ class EyeDetector:
         self.face_mesh = self.mp_face_mesh.FaceMesh(refine_landmarks=True)
 
     def _get_gaze_direction(self, landmarks):
-        # Ojo izquierdo
-        left_eye_left = landmarks[33]
-        left_eye_right = landmarks[133]
-        left_pupil = landmarks[468]
+        left = landmarks[33]
+        right = landmarks[133]
+        top = landmarks[159]
+        bottom = landmarks[145]
+        pupil = landmarks[468]
 
-        eye_width = left_eye_right.x - left_eye_left.x
+        # Normalización horizontal
+        eye_width = right.x - left.x
         if abs(eye_width) < 1e-6:
             return "CENTER"
-        pupil_pos = (left_pupil.x - left_eye_left.x) / eye_width
+        x_ratio = (pupil.x - left.x) / eye_width
 
-        if pupil_pos < 0.35:
+        # Normalización vertical
+        eye_height = bottom.y - top.y
+        if abs(eye_height) < 1e-6:
+            return "CENTER"
+        y_ratio = (pupil.y - top.y) / eye_height
+
+        # Clasificación
+        if x_ratio < 0.35:
             return "LEFT"
-        elif pupil_pos > 0.65:
+        elif x_ratio > 0.65:
             return "RIGHT"
-        elif pupil_pos < 0.45:
+        elif y_ratio < 0.35:
             return "UP"
-        elif pupil_pos > 0.55:
+        elif y_ratio > 0.65:
             return "DOWN"
         else:
             return "CENTER"
@@ -31,10 +40,17 @@ class EyeDetector:
     def _is_blinking(self, landmarks):
         top = landmarks[159]
         bottom = landmarks[145]
+        left = landmarks[33]
+        right = landmarks[133]
 
-        eye_distance = abs(top.y - bottom.y)
+        vertical = abs(top.y - bottom.y)
+        horizontal = abs(left.x - right.x)
 
-        return eye_distance < 0.01
+        if horizontal == 0:
+            return False
+
+        ear = vertical / horizontal
+        return ear < 0.2
 
     def process_frame(self, frame):
         """
