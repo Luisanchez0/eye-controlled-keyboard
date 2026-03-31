@@ -21,6 +21,10 @@ class EyeDetector:
             return "LEFT"
         elif pupil_pos > 0.65:
             return "RIGHT"
+        elif pupil_pos < 0.45:
+            return "UP"
+        elif pupil_pos > 0.55:
+            return "DOWN"
         else:
             return "CENTER"
 
