@@ -6,6 +6,7 @@ class EyeDetector:
         self.mp_face_mesh = mp_face_mesh
         self.face_mesh = self.mp_face_mesh.FaceMesh(refine_landmarks=True)
 
+
     def _get_gaze_direction(self, landmarks):
         left = landmarks[33]
         right = landmarks[133]
