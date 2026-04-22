@@ -26,14 +26,14 @@ class EyeDetector:
             return "CENTER"
         y_ratio = (pupil.y - top.y) / eye_height
 
-        # Clasificación
-        if x_ratio < 0.35:
+        # Clasificación (¡Valores de sensibilidad ajustados!)
+        if x_ratio < 0.45:       # Antes 0.35 -> Ahora es más fácil mirar a la IZQUIERDA
             return "LEFT"
-        elif x_ratio > 0.65:
+        elif x_ratio > 0.55:     # Antes 0.65 -> Ahora es más fácil mirar a la DERECHA
             return "RIGHT"
-        elif y_ratio < 0.35:
+        elif y_ratio < 0.40:     # Antes 0.35 -> Ahora es más fácil mirar ARRIBA
             return "UP"
-        elif y_ratio > 0.65:
+        elif y_ratio > 0.50:     # Antes 0.65 -> Ahora es MUCHO más fácil mirar ABAJO
             return "DOWN"
         else:
             return "CENTER"
