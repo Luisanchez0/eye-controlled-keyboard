@@ -14,8 +14,8 @@ Pillow>=10.0.0
 scipy>=1.11.0
 scikit-learn>=1.3.0
 
-# Optional: For better performance
-opencv-python-headless==4.8.1.78  # Use instead of opencv-python for servers
+# Optional: use opencv-python-headless instead of opencv-python only on servers without GUI/camera windows.
+# opencv-python-headless==4.8.1.78
 
 # Development dependencies
 # Uncomment below for development
@@ -23,3 +23,6 @@ opencv-python-headless==4.8.1.78  # Use instead of opencv-python for servers
 # black==23.9.1
 # flake8==6.1.0
 # pylint==3.0.0
+ 
+# WebSocket server for frontend demo
+websockets>=11.0
